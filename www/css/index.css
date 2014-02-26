@@ -27,6 +27,7 @@ body {
 	padding-top: 70px;
 	padding-bottom: 70px;
 }
+.instagrom-item .thumbnail img { max-height: 140px; }
 #footer {
 	text-align: center;
 }
