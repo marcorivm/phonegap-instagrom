@@ -1,0 +1,13 @@
+    <div class="container" id="my_feed">
+        <div class="row">
+            <div data-ng-repeat="grom in groms" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 instagrom-item">
+                <div class="thumbnail">
+                    <img data-ng-src="{{ base_url + 'groms/images/' + grom.content }}" src="http://lorempixel.com/200/200/?i=1" alt="...">
+                    <div class="caption">
+                        <p>{{ grom.description }} &nbsp;</p>
+                        <p>By: <a ng-href="{{ 'profile.html?id=' + grom.user_id}}">Username</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

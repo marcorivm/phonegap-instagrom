@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <!--
     Licensed to the Apache Software Foundation (ASF) under one
@@ -51,13 +52,10 @@
                         <a href="index.html">Home</a>
                     </li>
                     <li>
-                        <a href="index.html">Test</a>
+                        <a href="#" class="take-picture">Subir una foto</a>
                     </li>
                     <li>
-                        <a href="#">Subir una foto</a>
-                    </li>
-                    <li>
-                        <a href="#">Salir</a>
+                        <a href="#" class="logout-btn">Salir</a>
                     </li>
                 </ul>
             </div>
@@ -66,35 +64,11 @@
         <!-- /.container-fluid -->
     </nav>
 
-
-    <div class="container" data-ng-controller="feedController" id="my_feed">
-        <div class="row">
-            <div data-ng-repeat="grom in groms" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 instagrom-item">
-                <div class="thumbnail">
-                    <img data-ng-src="{{ base_url + 'groms/images/' + grom.content }}" src="http://lorempixel.com/200/200/?i=1" alt="...">
-                    <div class="caption">
-                        <p>{{ grom.description }}</p>
-                        <p>By: <a ng-href="{{ 'profile.html?id=' + grom.user_id}}">Username</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container" id="image_preview" style="display:none;">
-        <div class="row">
-        <form action="" id="image_form">
-            <img src="" alt="" style="width: 300px">
-            <textarea name="description" id="description" cols="30" rows="10"></textarea>
-            <button type="submit" class="btn btn-primary">Subir foto</button>
-        </form>
-        </div>
-    </div>
-
+    <div data-ng-view></div>
 
     <nav class="navbar navbar-inverse navbar-fixed-bottom" id="footer" role="navigation">
         <div class="container-fluid">
-            <button type="button" class="btn" id="take_picture">
+            <button type="button" class="btn take-picture" id="take_picture">
                 <span class="glyphicon glyphicon-camera"></span>
             </button>
         </div>
@@ -104,6 +78,7 @@
     <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular-route.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript">

@@ -1,8 +1,88 @@
 var update;
-var instagrom = angular.module('instagrom', [])
+var api_key = (function() {
+    if (window.sessionStorage.getItem('api_key') != null) {
+        return window.sessionStorage.getItem('api_key');
+    } else if (window.localStorage.getItem('api_key') != null) {
+        return window.localStorage.getItem('api_key');
+    } else {
+        window.location = 'login.html';
+    }
+})();
+
+
+var instagrom = angular.module('instagrom', ['ngRoute'])
     .value('base_url', base_url)
     .value('api_url', api_url)
-    .value('api_key', "")
+    .value('api_key', api_key)
+    .config(['$routeProvider',
+        function($routeProvider) {
+            $routeProvider.when('/', {
+                templateUrl: 'partials/home.html',
+                controller: 'feedController'
+            });
+            $routeProvider.when('/upload', {
+                templateUrl: 'partials/upload.html',
+                controller: 'photoUploadController'
+            });
+            $routeProvider.otherwise({
+                redirectTo: '/'
+            });
+        }
+    ])
+    .run(['$rootScope', '$location',
+        function($rootScope, $location) {
+            $(".logout-btn").on("click", function() {
+                window.localStorage.removeItem('api_key');
+                window.sessionStorage.removeItem('api_key');
+                window.location = 'login.html';
+            });
+            $(".take-picture").on('click', function() {
+                var editPhoto = function(file_uri) {
+                    $rootScope.file_uri = file_uri;
+                    $location.path('/upload');
+                }
+
+                navigator.camera.getPicture(editPhoto, function(message) {
+                    alert('Failed because: ' + message);
+                }, {
+                    quality: 10,
+                    destinationType: Camera.DestinationType.FILE_URI,
+                    saveToPhotoAlbum: true,
+                    correctOrientation: true
+                })
+            });
+        }
+    ])
+    .controller('photoUploadController',
+        function($scope, $location, api_url, api_key) {
+            var uploadPhoto = function(file_uri, description) {
+                var options = new FileUploadOptions();
+                options.fileKey = 'content';
+                options.fileName = file_uri.substr(file_uri.lastIndexOf('/') + 1);
+                options.mimeType = "image/jpeg";
+
+                options.params = {
+                    description: description,
+                    api_key: api_key
+                };
+
+                var file_transfer = new FileTransfer();
+                file_transfer.upload(file_uri, encodeURI(api_url + 'groms'), function(message) {
+                        $location.path('/');
+                    },
+                    function(error) {
+
+                    }, options);
+            };
+
+            $("#image_form").on('submit', function(event) {
+                var $this = $(this);
+                var description = $this.find('textarea').val();
+                uploadPhoto($scope.file_uri, description);
+                event.preventDefault();
+                return false;
+            })
+        })
     .controller('feedController',
         function($scope, api_url, base_url, api_key) {
             $scope.groms = [];
@@ -33,53 +113,3 @@ var instagrom = angular.module('instagrom', [])
             }
             update();
         });
-
-$("#take_picture").on('click', function() {
-
-    var uploadPhoto = function(file_uri, description) {
-        var options = new FileUploadOptions();
-        options.fileKey = 'content';
-        options.fileName = file_uri.substr(file_uri.lastIndexOf('/') + 1);
-        options.mimeType = "image/jpeg";
-
-        options.params = {
-            description: description
-        };
-
-        var file_transfer = new FileTransfer();
-        file_transfer.upload(file_uri, encodeURI(api_url + 'groms'), function(message) {
-                update();
-            },
-            function(error) {
-
-            }, options);
-    };
-
-    var editPhoto = function(file_uri) {
-        var $image_preview = $('#image_preview');
-        var $my_feed = $('#my_feed');
-        $image_preview.find('img').attr('src', file_uri);
-        $image_preview.show();
-        $my_feed.hide();
-    }
-
-    $("#image_form").on('submit', function(event) {
-        var $this = $(this);
-        var file_uri = $this.find('img').attr('src');
-        var description = $this.find('textarea').val();
-        uploadPhoto(file_uri, description);
-        $('#image_preview').hide();
-        $('#my_feed').show();
-        event.preventDefault();
-        return false;
-    })
-
-    navigator.camera.getPicture(editPhoto, function(message) {
-        alert('Failed because: ' + message);
-    }, {
-        quality: 10,
-        destinationType: Camera.DestinationType.FILE_URI,
-        saveToPhotoAlbum: true,
-        correctOrientation: true
-    })
-});
