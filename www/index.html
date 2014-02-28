@@ -67,17 +67,27 @@
     </nav>
 
 
-    <div class="container" data-ng-controller="feedController">
+    <div class="container" data-ng-controller="feedController" id="my_feed">
         <div class="row">
             <div data-ng-repeat="grom in groms" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 instagrom-item">
                 <div class="thumbnail">
                     <img data-ng-src="{{ base_url + 'groms/images/' + grom.content }}" src="http://lorempixel.com/200/200/?i=1" alt="...">
                     <div class="caption">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae, quod, perspiciatis fuga corporis incidunt nobis vitae facere explicabo architecto ipsa minima dolores quaerat laborum aliquid blanditiis odit accusantium totam eligendi?</p>
-                        <p>By: <a href="profile.html">Username</a></p>
+                        <p>{{ grom.description }}</p>
+                        <p>By: <a ng-href="{{ 'profile.html?id=' + grom.user_id}}">Username</a></p>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="container" id="image_preview" style="display:none;">
+        <div class="row">
+        <form action="" id="image_form">
+            <img src="" alt="" style="width: 300px">
+            <textarea name="description" id="description" cols="30" rows="10"></textarea>
+            <button type="submit" class="btn btn-primary">Subir foto</button>
+        </form>
         </div>
     </div>
 

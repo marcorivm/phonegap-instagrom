@@ -16,7 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+var base_url = "http://instagrom.marcorivm.com/";
+var api_url = base_url + "api/v1/";
 var app = {
     // Application Constructor
     initialize: function() {
