@@ -1,0 +1,15 @@
+<form role="form" id="upload_form" action="groms">
+  <div class="col-xs-6">
+      <div class="thumbnail">
+        <img data-ng-src="{{ file_uri }}" alt="...">
+      </div>
+      <div class="caption">
+      <p>{{ description }} &nbsp;</p>
+      </div>
+  </div>
+  <div class="form-group col-xs-6">
+    <label for="description">Description</label>
+    <textarea class="form-control" id="description" name="description" data-ng-model="description"></textarea>
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
